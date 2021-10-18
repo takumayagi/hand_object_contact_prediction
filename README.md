@@ -28,7 +28,7 @@ Required videos are listed in configs/\*_vids.txt.
 
 ### Clone repository
 ```
-git clone https://github.com/takumayagi/hand_object_contact_prediction.git --recursive
+git clone  --recursive https://github.com/takumayagi/hand_object_contact_prediction.git
 ```
 
 ### Install FlowNet2 submodule
