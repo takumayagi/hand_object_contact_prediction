@@ -1,8 +1,6 @@
 # Hand-Object Contact Prediction (BMVC2021)
 This repository contains the code and data for the paper "Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction" by Takuma Yagi, Md. Tasnimul Hasan and Yoichi Sato.
 
-**Under Construction: We will publish the code and data as soon as possible.**
-
 ## Requirements
 * Python 3.6+
 * ffmpeg
@@ -17,7 +15,7 @@ This repository contains the code and data for the paper "Hand-Object Contact Pr
 * [mllogger](https://github.com/takumayagi/mllogger)
 * [flownet2-pytorch](https://github.com/NVIDIA/flownet2-pytorch)
 
-Caution: This repository requires ~200GB space for testing, ~400GB space for trusted label training and ~3TB space for full training.
+Caution: This repository requires ~100GB space for testing, ~200GB space for trusted label training and ~3TB space for full training.
 
 ## Getting Started
 ### Download the data
@@ -89,7 +87,7 @@ python train.py --model CrUnionLSTMHO --eval --resume pretrained/proposed_model_
 python train.py --model CrUnionLSTMHO --eval --resume pretrained/proposed_model_180000.pth --vis
 ```
 
-This will produce a mp4 file to 
+This will produce a mp4 file under <output_dir>/vis_predictions/.
 
 ## Training
 ### Full training
