@@ -168,8 +168,8 @@ def main():
     logger.info("Validation vids: {}".format(valid_vids))
 
   if args.debug:
-    vid_list = ["P01_01"]
-    valid_vid_list = ["P01_11"]
+    vid_list = ["P14_08"]
+    valid_vid_list = ["P14_08"]
 
   if args.model in ["Fixed", "IoU"]:
     valid_dataset = EPICDatasetDummy(args.image_dir, args.flow_dir, args.data_dir, valid_vid_list, False)
@@ -463,7 +463,7 @@ def main():
 
   else:  # Evaluation
     predictions = eval_net(args, device, save_dir, model, valid_dataset)
-    pred_path = osp.join(save_dir, "predictions_{}.json".format(osp.splitext(osp.basename(eval_vids))[0]))
+    pred_path = osp.join(save_dir, "predictions_{}.json".format(osp.splitext(osp.basename(valid_vids))[0]))
     with open(pred_path, "w") as f:
       json.dump(predictions, f)
   logger.info("Done. Elapsed time: {} (s)".format(time.time()-total_start_time))

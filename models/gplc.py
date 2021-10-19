@@ -23,9 +23,8 @@ class CrUnionLSTMHO(nn.Module):
     self.noisy_net = UnionLSTMHO(args)
     self.clean_net = UnionLSTMHO(args)
 
-    return  # XXX
-    noisy_path = "pretrained/training/UnionLSTMHO_noisy_pretrain_210610_model_035000.pth"
-    clean_path = "pretrained/training/UnionLSTMHO_clean_pretrain_210610_model_010000.pth"
+    noisy_path = "pretrained/training/UnionLSTMHO_noisy_pretrain.pth"
+    clean_path = "pretrained/training/UnionLSTMHO_clean_pretrain.pth"
 
     if osp.exists(noisy_path):
       print(f"Noisy Net: {noisy_path}")
@@ -50,8 +49,8 @@ class CrUnionLSTMHORGB(nn.Module):
     self.noisy_net = UnionLSTMHORGB(args)
     self.clean_net = UnionLSTMHORGB(args)
 
-    noisy_path = "pretrained/training/UnionLSTMHORGB_noisy_pretrain_210611_model_020000.pth"
-    clean_path = "pretrained/training/UnionLSTMHORGB_clean_pretrain_210611_model_010000.pth"
+    noisy_path = "pretrained/training/UnionLSTMHORGB_noisy_pretrain.pth"
+    clean_path = "pretrained/training/UnionLSTMHORGB_clean_pretrain.pth"
 
     if osp.exists(noisy_path):
       print(f"Noisy Net: {noisy_path}")
@@ -76,8 +75,8 @@ class CrUnionLSTMHOFlow(nn.Module):
     self.noisy_net = UnionLSTMHOFlow(args)
     self.clean_net = UnionLSTMHOFlow(args)
 
-    noisy_path = "pretrained/training/UnionLSTMHOFlow_noisy_pretrain_210611_model_020000.pth"
-    clean_path = "pretrained/training/UnionLSTMHOFlow_clean_pretrain_210611_model_010000.pth"
+    noisy_path = "pretrained/training/UnionLSTMHOFlow_noisy_pretrain.pth"
+    clean_path = "pretrained/training/UnionLSTMHOFlow_clean_pretrain.pth"
 
     if osp.exists(noisy_path):
       print(f"Noisy Net: {noisy_path}")

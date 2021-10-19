@@ -115,7 +115,7 @@ class EPICDatasetBase(Dataset):
         union_imgs.append(cv2.resize(img[uy1:uy2, ux1:ux2], (self.rgb_width, self.rgb_height)).astype(np.float32))
 
       if "flow" in self.modality:
-        flow_path = osp.join(flow_dir, "flows",  f"fw_{int(frame_num):010d}.flo")
+        flow_path = osp.join(flow_dir, f"fw_{int(frame_num):010d}.flo")
         # flow_path = osp.join(flow_dir, f"fw_{int(frame_num):010d}.flo")
         flow = read_png_flow(flow_path)
 
@@ -264,7 +264,7 @@ class EPICDatasetPL(EPICDatasetBase):
     print(Counter(all_labels.tolist()))
 
 
-class EPICDataset(EPICDatasetPL):
+class EPICDataset(EPICDatasetBase):
   def __init__(self, root_image_dir, root_flow_dir, root_data_dir, vid_list, train, modality=["rgb", "flow"], ignore_null=False, debug=False, filter_invalid=True):
     super().__init__(root_image_dir, root_flow_dir, root_data_dir, vid_list, train, modality, debug)
 

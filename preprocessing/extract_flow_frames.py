@@ -104,14 +104,16 @@ if __name__ == '__main__':
   parser.add_argument('--image_dir', default="data/rgb_frames/")
   parser.add_argument('--anno_dir', default="data/annotations/")
   parser.add_argument('--out_dir', default="data/flow_frames/")
+  parser.add_argument('--flownet_path', default="pretrained/FlowNet2_checkpoint.pth.tar")
   parser.add_argument('--fp16', action='store_true', help='Run model in pseudo-fp16 mode (fp16 storage fp32 math).')
   parser.add_argument("--rgb_max", type=float, default=255.)
   parser.add_argument("--in_height", type=int, default=384)
-  parser.add_argument("--in_width", type=int, default=512)
+  parser.add_argument("--in_width", type=int, default=640)
   parser.add_argument("--out_ratio", type=int, default=2)
-  parser.add_argument("--batch_size", type=int, default=32)
+  parser.add_argument("--batch_size", type=int, default=24)
   parser.add_argument("--nb_workers", type=int, default=8)
   parser.add_argument("--frame_skip", type=int, default=2)
+  parser.add_argument('--gt', action='store_true')
   parser.add_argument('--debug', action='store_true')
   parser.add_argument('--extract_backward_flow', action='store_true')
   parser.add_argument('--no_filter', action='store_true')
@@ -125,16 +127,16 @@ if __name__ == '__main__':
   assert in_height % 64 == 0 and in_width % 64 == 0
   out_height, out_width = in_height // args.out_ratio, in_width // args.out_ratio
 
-  pseudo_anno_path = osp.join(args.anno_dir, pid, args.vid, "anno_v5_processed.json")
-
-  with open(pseudo_anno_path) as f:
-    anno_dict = json.load(f)
   valid_frame_nums = []
-  for anno_track in anno_dict:
-    valid_frame_nums.extend(anno_track["annos"]["frame_nums"])
 
-  gt_anno_path = osp.join(args.anno_dir, pid, args.vid, f"dense_anno_{args.vid}_v3.json")
-  if osp.exists(gt_anno_path):
+  if not args.gt:
+    pseudo_anno_path = osp.join(args.anno_dir, pid, args.vid, "anno_v5_processed.json")
+    with open(pseudo_anno_path) as f:
+      anno_dict = json.load(f)
+    for anno_track in anno_dict:
+      valid_frame_nums.extend(anno_track["annos"]["frame_nums"])
+  else:
+    gt_anno_path = osp.join(args.anno_dir, pid, args.vid, f"dense_anno_{args.vid}_v3.json")
     with open(gt_anno_path) as f:
       gt_anno_dict = json.load(f)
     for anno_track in gt_anno_dict:
@@ -157,7 +159,7 @@ if __name__ == '__main__':
 
   # Initialize network
   net = FlowNet2(args).cuda()
-  dict = torch.load("pretrained/flownet2.pth.tar")
+  dict = torch.load(args.flownet_path)
   net.load_state_dict(dict["state_dict"])
 
   out_dir = osp.join(args.out_dir, pid, args.vid)
@@ -165,7 +167,7 @@ if __name__ == '__main__':
   dataset = PairedImageDataset(args, image_dir, valid_frame_nums, args.frame_skip)
   data_loader = DataLoader(dataset, batch_size=args.batch_size, num_workers=args.nb_workers)
 
-  print(f"Number of frames: {len(dataset)}")
+  print(f"{args.vid}: Number of frames={len(dataset)}")
 
   if len(dataset) == 0:
     print("No more frames to be processed")
