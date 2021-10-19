@@ -1,6 +1,8 @@
 # Hand-Object Contact Prediction (BMVC2021)
 This repository contains the code and data for the paper "Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction" by Takuma Yagi, Md. Tasnimul Hasan and Yoichi Sato.
 
+<img src="assets/method_v6.png" width="600" >
+
 ## Requirements
 * Python 3.6+
 * ffmpeg
@@ -20,7 +22,7 @@ Caution: This repository requires ~100GB space for testing, ~200GB space for tru
 ## Getting Started
 ### Download the data
 1. Download EPIC-KITCHENS-100 videos from the [official site](https://github.com/epic-kitchens/epic-kitchens-download-scripts). Since this dataset uses 480p frames and optical flows for training and testing you need to download the original videos. Place them to data/videos/PXX/PXX_XX.MP4.
-2. Download and extract the [ground truth label]() and [pseudo-label (large, only required for training)]() to data/.
+2. Download and extract the [ground truth label](https://drive.google.com/file/d/1n344E9aVi9uwbBk2ODj8S_N-SPGzh9AR/view?usp=sharing) and [pseudo-label (11GB, only required for training)](https://drive.google.com/file/d/1IzLnoGdgVwJ1soo5TS2GljWRq3_4E-Kn/view?usp=sharing) to data/.
 
 Required videos are listed in configs/\*_vids.txt.
 
@@ -63,11 +65,12 @@ This requires the annotation files since we only extract flows used in training/
 ```
 # Same for test, trusted_train, and noisy_train
 # For trusted labels (test, valid, trusted_train)
+# Don't forget to add --gt
 for vid in `cat configs/valid_vids.txt`; do python preprocessing/extract_flow_frames.py $vid --gt; done
 
 # For pseudo-labels
 # Extracting flows for noisy_train will take up large space
-for vid in `cat configs/noisy_train_vids.txt`; do python preprocessing/extract_flow_frames.py $vid --gt; done
+for vid in `cat configs/noisy_train_vids.txt`; do python preprocessing/extract_flow_frames.py $vid; done
 ```
 
 ## Demo (WIP)
@@ -79,12 +82,14 @@ Download the [pretrained models](https://drive.google.com/drive/folders/1FjAqdIG
 
 Evaluation by test set:
 ```
-python train.py --model CrUnionLSTMHO --eval --resume pretrained/proposed_model_180000.pth
+python train.py --model CrUnionLSTMHO --eval --resume pretrained/proposed_model.pth
+python train.py --model CrUnionLSTMHORGB --eval --resume pretrained/rgb_model.pth  # RGB baseline
+python train.py --model CrUnionLSTMHOFlow --eval --resume pretrained/flow_model.pth  # Flow baseline
 ```
 
 ### Visualization
 ```
-python train.py --model CrUnionLSTMHO --eval --resume pretrained/proposed_model_180000.pth --vis
+python train.py --model CrUnionLSTMHO --eval --resume pretrained/proposed_model.pth --vis
 ```
 
 This will produce a mp4 file under <output_dir>/vis_predictions/.
@@ -118,3 +123,17 @@ python train.py --model UnionLSTMHO --dir_name clean_pretrain --train_vids confi
 ### Tips
 - Set larger --nb_workers an --nb_eval_workers if you have enough number of CPUs.
 - You can set --modality to either rgb or flow if training single-modality models.
+
+## Citation
+Takuma Yagi, Md. Tasnimul Hasan, and Yoichi Sato, Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction. In Proceedings of the British Machine Vision Conference. 2021.
+
+```
+@inproceedings{yagi2021hand,
+  title = {Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction},
+  author = {Yagi, Takuma and Hasan, Md. Tasnimul and Sato, Yoichi},
+  booktitle = {Proceedings of the British Machine Vision Conference},
+  year={2021}
+}
+```
+
+When you use the data for training and evaluation, please also cite the original dataset ([EPIC-KITCHENS Dataset](https://epic-kitchens.github.io/)).
