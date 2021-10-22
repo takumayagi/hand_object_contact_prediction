@@ -1,5 +1,5 @@
 # Hand-Object Contact Prediction (BMVC2021)
-This repository contains the code and data for the paper "Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction" by Takuma Yagi, Md. Tasnimul Hasan and Yoichi Sato.
+This repository contains the code and data for the paper ["Hand-Object Contact Prediction via Motion-Based Pseudo-Labeling and Guided Progressive Label Correction"](https://arxiv.org/abs/2110.10174) by Takuma Yagi, Md. Tasnimul Hasan and Yoichi Sato.
 
 <img src="assets/method_v6.png" width="600" >
 
